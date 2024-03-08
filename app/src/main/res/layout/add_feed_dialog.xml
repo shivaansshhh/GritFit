@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/design_default_color_secondary"
+    android:paddingStart="21dp"
+    android:paddingEnd="21dp"
+    android:paddingBottom="21dp"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/create_new_post"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:gravity="center"/>
+
+    <EditText
+        android:id="@+id/edtCaption"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:layout_marginTop="15dp"
+        android:backgroundTint="@color/white"
+        android:textStyle="italic"
+        android:textSize="22sp"
+        android:hint="@string/what_s_in_your_mind"
+        android:textColorHint="@color/light_black"
+        android:textColor="@color/black"
+        android:inputType="text"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
+        android:autofillHints="name"
+
+        />
+    <ImageView
+        android:id="@+id/inputImage"
+        android:layout_width="match_parent"
+        android:layout_height="240dp"
+        android:src="@drawable/logo"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="center"
+        android:contentDescription="@string/feedPost" />
+
+
+
+
+    <Button
+        android:id="@+id/btnPost"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:text="@string/post"
+        android:layout_marginTop="15dp"
+        android:textColor="@color/white"
+        android:backgroundTint="@color/black"/>
+
+
+
+</LinearLayout>

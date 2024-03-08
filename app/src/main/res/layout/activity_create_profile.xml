@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    android:padding="10dp"
+    android:background="@color/white"
+    tools:context=".CreateProfileActivity">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/create_profile"
+        android:textSize="25sp"
+        android:textColor="@color/black"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="40dp"
+        />
+
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/profilePic"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:background="@drawable/profile_custom_input"
+        android:src="@drawable/baseline_person_24"
+        android:elevation="10dp"
+        android:layout_marginBottom="20dp"
+        android:contentDescription="@string/profile"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/name1"
+        android:textSize="20sp"
+        android:textColor="@color/black"
+        android:layout_marginStart="2dp"
+        />
+
+    <EditText
+        android:id="@+id/etName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/john_smith"
+        android:textColorHint="@color/light_black"
+        android:textSize="22sp"
+        android:inputType="textPersonName"
+        android:autofillHints="name"
+        android:textColor="@color/black"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Username"
+        android:textSize="20sp"
+        android:textColor="@color/black"
+        android:layout_marginStart="2dp"
+        />
+
+    <EditText
+        android:id="@+id/etUsername"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/john_smith"
+        android:textColorHint="@color/light_black"
+        android:textSize="22sp"
+        android:inputType="textPersonName"
+        android:autofillHints="name"
+        android:textColor="@color/black"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Bio"
+        android:textSize="20sp"
+        android:textColor="@color/black"
+        android:layout_marginStart="2dp"
+        />
+
+    <EditText
+        android:id="@+id/etBio"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Hey there! I'm the fittest one."
+        android:textColorHint="@color/light_black"
+        android:textSize="22sp"
+        android:inputType="textPersonName"
+        android:autofillHints="name"
+        android:textColor="@color/black"/>
+
+
+    <TextView
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/gender1"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:layout_marginStart="2dp"
+        />
+
+    <EditText
+        android:id="@+id/etGender"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/male_female"
+        android:textColorHint="@color/light_black"
+        android:textSize="22sp"
+        android:inputType="text"
+        android:autofillHints="name"
+        android:textColor="@color/black"/>
+
+    <TextView
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/weight"
+        android:textSize="20sp"
+        android:textColor="@color/black"
+        android:layout_marginStart="2dp"
+        />
+
+    <EditText
+        android:id="@+id/etWeight"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/_48kg"
+        android:textColorHint="@color/light_black"
+        android:textSize="22sp"
+        android:inputType="number"
+        android:autofillHints="phone"
+        android:textColor="@color/black"/>
+
+    <TextView
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/fitness_goal"
+        android:textSize="20sp"
+        android:textColor="@color/black"
+        android:layout_marginStart="2dp"
+        />
+
+    <EditText
+        android:id="@+id/etGoal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/fitness_weight_loss_weight_gain_muscle_gain"
+        android:textColorHint="@color/light_black"
+        android:textSize="22sp"
+        android:inputType="text"
+        android:autofillHints="name"
+        android:textColor="@color/black"/>
+
+
+
+    <Button
+        android:id="@+id/btnSave"
+        android:layout_marginTop="40dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:text="@string/save"
+        android:textSize="22sp"
+        android:backgroundTint="@color/black"/>
+
+</LinearLayout>

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "141615143483",
+    "project_id": "gritfit-fitness",
+    "storage_bucket": "gritfit-fitness.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:141615143483:android:f8bb2c3e2b35b7abcd1a1e",
+        "android_client_info": {
+          "package_name": "com.example.gritfitfitnessstudio"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "141615143483-5t9gse63bcvn5u8nf97oi62cna6kpgoa.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC8TSrr7E_kFVS4k55wju6Bf4IOTzgA8Vg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "141615143483-5t9gse63bcvn5u8nf97oi62cna6kpgoa.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    >
+
+    <!--    Container   -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp"
+        android:layout_gravity="center"
+        tools:context=".MainActivity">
+
+        <!--        GritFit logo   -->
+
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="25dp"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/logo" />
+
+        <!--        login text   -->
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginBottom="25dp"
+            android:text="@string/Login"
+            android:textSize="30sp"
+            android:textColor="@color/black"
+            android:textStyle="bold" />
+
+        <!--        for Email   -->
+
+        <EditText
+            android:id="@+id/login_email_et"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:hint="@string/enter_email"
+            android:textColor="@color/black"
+            android:autofillHints="emailAddress"
+            android:inputType="textEmailAddress"
+            android:drawableStart="@drawable/custom_email_input"
+            android:drawablePadding="10dp"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:background="@drawable/custom_input"
+            android:layout_margin="5dp"
+            android:textColorHint="@color/light_black"/>
+
+
+        <!--        for password   -->
+
+        <EditText
+            android:id="@+id/login_pass_et"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:hint="@string/Enter_password"
+            android:textColor="@color/black"
+            android:autofillHints="password"
+            android:inputType="textPassword"
+            android:drawableStart="@drawable/custom_pass_input"
+            android:drawablePadding="10dp"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:background="@drawable/custom_input"
+            android:layout_margin="5dp"
+            android:textColorHint="@color/light_black"/>
+
+        <CheckBox
+            android:id="@+id/login_checkbox"
+            android:layout_width="150dp"
+            android:layout_height="50dp"
+            android:text="@string/show_password"
+            android:buttonTint="@color/black"
+            android:textColor="@color/black"
+            android:layout_gravity="end" />
+
+
+
+        <!--        login button   -->
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/black"
+            android:textColor="@color/white"
+            android:text="@string/login_btn"
+            android:layout_margin="5dp"
+            android:id="@+id/btn_to_login"
+            android:textSize="25sp"/>
+
+        <ProgressBar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/progressBar_login"
+            android:indeterminateTint="@color/black"
+            android:indeterminate="true"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:visibility="invisible"/>
+
+        <!--        forget password   -->
+
+        <TextView
+            android:id="@+id/forgetPassword"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="11dp"
+            android:text="@string/forget_password"
+            android:textColor="#454141"
+            android:textSize="18sp" />
+
+
+        <!--        register -->
+
+        <TextView
+
+            android:id="@+id/registerYourself"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="30dp"
+            android:text="@string/register"
+            android:textColor="@color/black"
+            android:textSize="25sp" />
+
+
+    </LinearLayout>
+</ScrollView>

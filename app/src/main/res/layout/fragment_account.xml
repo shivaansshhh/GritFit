@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".AccountFragment">
+
+
+<!-- main container   -->
+
+ <LinearLayout
+     xmlns:app="http://schemas.android.com/apk/res-auto"
+     android:layout_width="match_parent"
+     android:layout_height="wrap_content"
+     android:paddingTop="20dp"
+     android:orientation="vertical">
+
+
+<!--  for profile pic  -->
+  <de.hdodenhof.circleimageview.CircleImageView
+      android:id="@+id/profilePic"
+      android:layout_gravity="center_horizontal"
+      android:layout_width="150dp"
+      android:layout_height="150dp"
+      android:src="@drawable/profile"
+      android:contentDescription="@string/profile"/>
+
+<!--  for name of the user  -->
+
+  <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="@string/user"
+      android:id="@+id/user"
+      android:layout_marginTop="20dp"
+      android:textSize="22sp"
+      android:textColor="@color/black"
+      android:textStyle="bold"
+      android:layout_gravity="center_horizontal"/>
+
+     <TextView
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:text="username"
+         android:id="@+id/username"
+         android:textSize="18sp"
+         android:textColor="@color/light_black"
+         android:layout_gravity="center_horizontal"/>
+
+
+     <TextView
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:text="@string/bio"
+         android:id="@+id/bio"
+         android:layout_marginTop="10dp"
+         android:textSize="18sp"
+         android:textColor="@color/black"
+         android:textStyle="italic"
+         android:layout_marginBottom="8dp"
+         android:layout_gravity="center_horizontal"/>
+
+
+     <Button
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:backgroundTint="@color/light_black"
+         android:textColor="@color/white"
+         android:layout_gravity="center_horizontal"
+         android:gravity="center"
+         android:text="Edit Profile"
+         android:layout_marginBottom="5dp"
+         android:id="@+id/editProfileBtn"
+         android:textSize="15sp"/>
+
+
+     <!--  tab layout   -->
+
+  <com.google.android.material.tabs.TabLayout
+      android:id="@+id/tab_layoutAccount"
+      android:layout_width="match_parent"
+      android:layout_height="?attr/actionBarSize"
+      android:background="@color/light_black"
+      android:contentDescription="@string/post_and_progress"
+      />
+
+  <androidx.viewpager2.widget.ViewPager2
+      android:id="@+id/view_pager"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent" />
+ </LinearLayout>
+</ScrollView>
