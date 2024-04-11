@@ -1,64 +1,135 @@
 package com.example.gritfitfitnessstudio;
+import static com.google.android.gms.common.internal.safeparcel.SafeParcelable.NULL;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.GridLayout;
+import android.widget.GridView;
+import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link AccountPostFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.*;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import io.grpc.HandlerRegistry;
+
 public class AccountPostFragment extends Fragment {
+    private GridView gridView;
+    private ImageAdapterUserProfile mAdapter;
+    private ProgressBar progressBar;
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private FirebaseAuth mAuth;
+    private FirebaseUser currentUser;
+    private DatabaseReference databaseReference;
+    private DatabaseReference userRef;
+    private String UserName;
+   private ArrayList<String> mImageUrls = new ArrayList<>();
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
-    public AccountPostFragment() {
-        // Required empty public constructor
-    }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment AccountPostFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static AccountPostFragment newInstance(String param1, String param2) {
-        AccountPostFragment fragment = new AccountPostFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
+    @Nullable
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.fragment_account_post, container, false);
+
+        gridView = rootView.findViewById(R.id.gridView);
+        progressBar = rootView.findViewById(R.id.progressBar);
+
+
+        mAuth = FirebaseAuth.getInstance();
+        currentUser = mAuth.getCurrentUser();
+        userRef = FirebaseDatabase.getInstance().getReference("Users_UID");
+
+        fetchUsername();
+        progressBar.setVisibility(View.VISIBLE);
+
+        
+        return rootView;
+}
+private void fetchImageUrlsFromFirebase(){
+    databaseReference = FirebaseDatabase.getInstance().getReference("User_Own_Post").child(UserName);
+    databaseReference.addValueEventListener(new ValueEventListener() {
+        @Override
+        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+            mImageUrls.clear();
+            for(DataSnapshot snapshot : dataSnapshot.getChildren()){
+                String imageURL = snapshot.getValue(String.class);
+                if (imageURL != null){
+                mImageUrls.add(imageURL);
+                }
+            }
+            mAdapter.notifyDataSetChanged();
+            progressBar.setVisibility(View.INVISIBLE);
+            Toast.makeText(getContext(), "Fetched", Toast.LENGTH_SHORT).show();
+
         }
-    }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_account_post, container, false);
+        @Override
+        public void onCancelled(@NonNull DatabaseError error) {
+            Toast.makeText(getContext(), "Error to fetch", Toast.LENGTH_SHORT).show();
+
+        }
+    });
+
+//
+//
+//    databaseReference.addChildEventListener(new ChildEventListener() {
+//        @Override
+//        public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+//            String post = snapshot.getValue(String.class);
+//            mImageUrls.add(post);
+//            mAdapter.notifyDataSetChanged();
+//            progressBar.setVisibility(View.INVISIBLE);
+//        }
+//
+//        @Override
+//        public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+//
+//        }
+//
+//        @Override
+//        public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+//
+//        }
+//
+//        @Override
+//        public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+//
+//        }
+//
+//        @Override
+//        public void onCancelled(@NonNull DatabaseError error) {
+//
+//        }
+//    });
+}
+    private void fetchUsername() {
+        String uid = currentUser.getUid();
+        userRef.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                UserName = snapshot.child("username").getValue(String.class);
+                Toast.makeText(getContext(), "welcome "+UserName, Toast.LENGTH_SHORT).show();
+                mAdapter = new ImageAdapterUserProfile(getContext(), mImageUrls);
+                gridView.setAdapter(mAdapter);
+                fetchImageUrlsFromFirebase();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(getContext(), "Error:" + error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:background="@color/white"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-
+z
 <!--    card view for each post   -->
 
     <androidx.cardview.widget.CardView

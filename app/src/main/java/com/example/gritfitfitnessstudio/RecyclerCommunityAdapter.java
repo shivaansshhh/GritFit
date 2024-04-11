@@ -8,6 +8,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -32,8 +34,13 @@ public class RecyclerCommunityAdapter extends RecyclerView.Adapter<RecyclerCommu
         holder.username.setText(arrFeed.get(position).username);
         holder.caption.setText(arrFeed.get(position).caption);
         holder.name.setText(arrFeed.get(position).name);
-        holder.uploadedPic.setImageResource(arrFeed.get(position).uploadedPic);
-        holder.profilePic.setImageResource(arrFeed.get(position).profilePic);
+//        holder.uploadedPic.setImageResource(arrFeed.get(position).uploadedPic);
+//        holder.profilePic.setImageResource(arrFeed.get(position).profilePic);
+
+        // Load profile picture from URL using Picasso
+        Picasso.get().load(arrFeed.get(position).profilePic).into(holder.profilePic);
+        // Load uploaded picture from URL using Picasso
+        Picasso.get().load(arrFeed.get(position).uploadedPic).into(holder.uploadedPic);
 
     }
 

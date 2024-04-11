@@ -1,9 +1,15 @@
 package com.example.gritfitfitnessstudio;
 
+import static android.app.Activity.RESULT_OK;
+
 import android.app.Dialog;
+import android.content.ContentResolver;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -13,6 +19,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -28,6 +35,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -42,8 +51,16 @@ public class CommunityFragment extends Fragment {
     DatabaseReference userOwnFeedRef;
     DatabaseReference userRef;
     FirebaseUser firebaseUser;
+
+    StorageReference storageReference;
+    DatabaseReference imgRef;
     String Username;
     String postId;
+    private static final int PICK_IMAGE_REQUEST = 1;
+    String imageUrl;
+    String enteredCaption;
+    Uri imageUri;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -73,20 +90,27 @@ public class CommunityFragment extends Fragment {
                 // Find views in the dialog layout
                 EditText edtCaption = dialog.findViewById(R.id.edtCaption);
                 Button btnPost = dialog.findViewById(R.id.btnPost);
+                ImageView inputImage = dialog.findViewById(R.id.inputImage);
+
+                inputImage.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        openGallery();
+                    }
+                });
 
                 // set click listener for post button in the dialog
                 btnPost.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        String enteredCaption;
                         if (edtCaption.getText().toString().isEmpty()) {
                             Toast.makeText(getContext(), "Enter Something", Toast.LENGTH_SHORT).show();
                         } else {
                             enteredCaption = edtCaption.getText().toString();
+                            // Upload the image to Firebase Storage
+                            uploadImage(imageUri);
 
-                            // save the entered caption as a new post to firebase
-                            savePostToFirebase(enteredCaption);
-                            saveUserOwnPost(enteredCaption);
+
 
                             // dismiss the dialog after saving the post
                             dialog.dismiss();
@@ -109,6 +133,8 @@ public class CommunityFragment extends Fragment {
         feedRef.keepSynced(true);
         userRef = FirebaseDatabase.getInstance().getReference("Users_UID");
         userRef.keepSynced(true);
+        storageReference = FirebaseStorage.getInstance().getReference().child("images");
+        imgRef = FirebaseDatabase.getInstance().getReference("image_urls");
     }
 
     private void initRecyclerView(View view) {
@@ -117,6 +143,68 @@ public class CommunityFragment extends Fragment {
         recyclerCommunityAdapter = new RecyclerCommunityAdapter(arrFeed);
         recyclerFeed.setAdapter(recyclerCommunityAdapter);
     }
+
+    private void openGallery(){
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "select picture"),PICK_IMAGE_REQUEST);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data){
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
+            // Get the image URI from the intent
+            imageUri = data.getData();
+        }
+    }
+    private void uploadImage(Uri imageUri) {
+        StorageReference fileRef = storageReference.child(System.currentTimeMillis() + "." + getFileExtension(imageUri));
+        fileRef.putFile(imageUri)
+                .addOnSuccessListener(taskSnapshot -> {
+                    // If successful, get the download URL of the image
+                    Task<Uri> downloadUrl = taskSnapshot.getStorage().getDownloadUrl();
+                    downloadUrl.addOnSuccessListener(uri -> {
+                        imageUrl = uri.toString();
+                        Toast.makeText(getContext(),"Uploadedddddddddd", Toast.LENGTH_SHORT).show();
+
+//                        save post to firebase(realtime)
+                        savePostToFirebase(enteredCaption, imageUrl);
+                        saveUserOwnPost(enteredCaption, imageUrl);
+                    });
+                })
+                .addOnFailureListener(e -> {
+                    // Handle unsuccessful uploads
+                    Toast.makeText(getContext(), "Upload failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                });
+    }
+
+    // Method to get the file extension of an image URI
+    private String getFileExtension(Uri uri) {
+        ContentResolver contentResolver = getActivity().getContentResolver();
+        MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
+        return mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(uri));
+    }
+
+    // Method to save the image URL to Firebase Database
+    private void saveImageToDatabase(String imageUrl) {
+        // Save the image URL to Realtime Database under a unique key
+        String imageKey = imgRef.push().getKey();
+        imgRef.child(imageKey).setValue(imageUrl)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        // If successful, show a success message
+                        Toast.makeText(getContext(), "Image uploaded successfully", Toast.LENGTH_SHORT).show();
+                    } else {
+                        // If unsuccessful, show an error message
+                        Toast.makeText(getContext(), "Failed to upload image", Toast.LENGTH_SHORT).show();
+                    }
+                });
+        }
+
+
+
 
     // fetch username of the current user from firebase
     private void fetchUsername() {
@@ -134,12 +222,15 @@ public class CommunityFragment extends Fragment {
         });
     }
 
-    private void saveUserOwnPost(String enteredCaption) {
+    private void saveUserOwnPost(String enteredCaption, String imageUrl) {
         // create a new object for a new post
-        UserModel newPost = new UserModel(firebaseUser.getDisplayName(), Username, enteredCaption, R.drawable.post1, R.drawable.profile);
+        UserModel newPost = new UserModel(imageUrl);
 
         // Save the new post to Firebase
-        userOwnFeedRef.child(Username).child(postId).setValue(newPost)
+//        userOwnFeedRef.child(Username).setValue(newPost)
+
+        DatabaseReference newPostRef = userOwnFeedRef.child(Username).push();
+        newPostRef.setValue(imageUrl)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
@@ -152,13 +243,12 @@ public class CommunityFragment extends Fragment {
                 });
     }
 
-    // save the entered caption as a new post to firebase
-    private void savePostToFirebase(String enteredCaption) {
+    private void savePostToFirebase(String enteredCaption, String imageUrl) {
         DatabaseReference newPostRef = feedRef.push();
 
         postId = newPostRef.getKey();
         // create a new object for a new post
-        UserModel newPost = new UserModel(firebaseUser.getDisplayName(), Username, enteredCaption, R.drawable.post1, R.drawable.profile);
+        UserModel newPost = new UserModel(firebaseUser.getDisplayName(), Username, enteredCaption, imageUrl, R.drawable.profile);
 
         // Save the new post to Firebase
         newPostRef.setValue(newPost)

@@ -8,7 +8,7 @@ public class UserModel {
     String UID;
     String bio;
     Integer profilePic;
-    Integer uploadedPic;
+    String uploadedPic;
 
     public UserModel() {
         // Default constructor to initialize fields to default values
@@ -28,12 +28,15 @@ public class UserModel {
 
 
     // Constructor to initialize all the fields
-    public UserModel(String name, String username, String caption, Integer uploadedPic, Integer profilePic) {
+    public UserModel(String name, String username, String caption, String uploadedPic, Integer profilePic) {
         this.name = name;
         this.username = username;
         this.caption = caption;
         this.uploadedPic = uploadedPic;
         this.profilePic = profilePic;
+    }
+    public UserModel(String uploadedPic){
+        this.uploadedPic = uploadedPic;
     }
 
     public String getBio(){
@@ -73,11 +76,11 @@ public class UserModel {
         this.caption = caption;
     }
 
-    public Integer getUploadedPic() {
+    public String getUploadedPic() {
         return uploadedPic;
     }
 
-    public void setUploadedPic(Integer uploadedPic) {
+    public void setUploadedPic(String uploadedPic) {
         this.uploadedPic = uploadedPic;
     }
 
